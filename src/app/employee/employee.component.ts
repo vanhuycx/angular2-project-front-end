@@ -11,6 +11,11 @@ export class EmployeeComponent implements OnInit {
   lastName:string = "Hopkin";
   gender: string = "Male";
   age: number = 20;
+  showDetails: boolean = false;
+
+  toggleDetails(): void {
+    this.showDetails = !this.showDetails;
+  }
 
   constructor() { }
 
