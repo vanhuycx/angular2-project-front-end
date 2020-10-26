@@ -1,86 +1,35 @@
-import { Component, OnInit, ɵEMPTY_MAP } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
+import { IEmployee } from '../employee';
+import { EmployeeService } from '../employee.service';
 @Component({
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.css'],
 })
 export class EmployeeListComponent implements OnInit {
-  employees: any[];
-  constructor() {
-    this.employees = [
-      {
-        code: 'emp101',
-        name: 'Tom',
-        gender: 'Male',
-        annualSalary: 5500,
-        dateOfBirth: '6/25/1988',
-      },
-      {
-        code: 'emp102',
-        name: 'Alex',
-        gender: 'Male',
-        annualSalary: 5700.95,
-        dateOfBirth: '9/6/1982',
-      },
-      {
-        code: 'emp103',
-        name: 'Mike',
-        gender: 'Male',
-        annualSalary: 5900,
-        dateOfBirth: '12/8/1979',
-      },
-      {
-        code: 'emp104',
-        name: 'Mary',
-        gender: 'Female',
-        annualSalary: 6500.826,
-        dateOfBirth: '10/14/1980',
-      },
-    ];
+  employees: IEmployee[];
+  selectedEmployeeCountRadioButton: string = 'All';
+
+  constructor(private _employeeService: EmployeeService) {}
+
+  onEmployeeCountRadioButtonChange(selectedRadioButtonValue: string): void {
+    this.selectedEmployeeCountRadioButton = selectedRadioButtonValue;
   }
 
-  getEmployees(): void {
-    this.employees = [
-      {
-        code: 'emp101',
-        name: 'Tom',
-        gender: 'Male',
-        annualSalary: 5500,
-        dateOfBirth: '6/25/1988',
-      },
-      {
-        code: 'emp102',
-        name: 'Alex',
-        gender: 'Male',
-        annualSalary: 5700.95,
-        dateOfBirth: '9/6/1982',
-      },
-      {
-        code: 'emp103',
-        name: 'Mike',
-        gender: 'Male',
-        annualSalary: 5900,
-        dateOfBirth: '12/8/1979',
-      },
-      {
-        code: 'emp104',
-        name: 'Mary',
-        gender: 'Female',
-        annualSalary: 6500.826,
-        dateOfBirth: '10/14/1980',
-      },
-      {
-        code: 'emp105',
-        name: 'Nancy',
-        gender: 'Female',
-        annualSalary: 6700.826,
-        dateOfBirth: '12/12/1982',
-      },
-    ];
+  getTotalEmployeeCount(): number {
+    return this.employees.length;
   }
-  trackByEmpCode(index: number, employee: any): string {
-    return employee.code;
+  getTotalMaleEmployeeCount(): number {
+    return this.employees.filter((e) => e.gender === 'Male').length;
   }
-  ngOnInit(): void {}
+  getTotalFemaleEmployeeCount(): number {
+    return this.employees.filter((e) => e.gender === 'Female').length;
+  }
+
+  //Initilize the employees variable using callback from Observable
+  ngOnInit(): void {
+    this._employeeService
+      .getEmployees()
+      .subscribe((employeeData) => (this.employees = employeeData));
+  }
 }
