@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { IEmployee } from './employee';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -10,9 +12,14 @@ export class EmployeeService {
   constructor(private _http: HttpClient) {}
 
   getEmployees(): Observable<IEmployee[]> {
-    return this._http
-      .get('http://localhost:51406/api/employee')
-      .pipe(map((response) => <IEmployee[]>response));
+    return this._http.get('http://localhost:51406/api/employee').pipe(
+      map((response) => <IEmployee[]>response),
+      catchError(this.handleError)
+    );
+  }
+  handleError(error: HttpErrorResponse) {
+    console.error(error);
+    return throwError(error);
   }
 }
 

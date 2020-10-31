@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { error } from 'protractor';
 import { IEmployee } from '../employee';
 import { EmployeeService } from '../employee.service';
 @Component({
@@ -9,6 +10,7 @@ import { EmployeeService } from '../employee.service';
 export class EmployeeListComponent implements OnInit {
   employees: IEmployee[];
   selectedEmployeeCountRadioButton: string = 'All';
+  statusMessage: string = 'Loading data. Please wait...';
 
   constructor(private _employeeService: EmployeeService) {}
 
@@ -28,8 +30,13 @@ export class EmployeeListComponent implements OnInit {
 
   //Initilize the employees variable using callback from Observable
   ngOnInit(): void {
-    this._employeeService
-      .getEmployees()
-      .subscribe((employeeData) => (this.employees = employeeData));
+    this._employeeService.getEmployees().subscribe(
+      (employeeData) => (this.employees = employeeData),
+      (error) => {
+        this.statusMessage =
+          'Problem with the service. Please try again after a few minutes.';
+        console.error(error);
+      }
+    );
   }
 }
