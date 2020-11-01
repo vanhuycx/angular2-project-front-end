@@ -1,31 +1,31 @@
-<table>
-    <thead>
-        <tr>
-            <th attr.colspan="{{columnSpan}}">
-                Employee Details
-            </th>
-        </tr>
-    </thead>
+<table *ngIf="employees">
+  <thead>
     <tr>
-        <td>First Name</td>
-        <td>{{firstName}}</td>
+      <th attr.colspan="{{ columnSpan }}">Employee Details</th>
     </tr>
-    <tr>
-        <td>Last Name</td>
-        <td>{{lastName}}</td>
-    </tr>
-    
-    <tr *ngIf='showDetails'>
-        <td>Gender</td>
-        <td>{{gender}}</td>
-    </tr>
-    <tr *ngIf='showDetails'>
-        <td>Age</td>
-        <td>{{age}}</td>
-    </tr>
+  </thead>
+  <tr>
+    <td>Code</td>
+    <td>{{ employees.code }}</td>
+  </tr>
+  <tr>
+    <td>Name</td>
+    <td>{{ employees.name }}</td>
+  </tr>
 
+  <tr>
+    <td>Gender</td>
+    <td>{{ employees.gender }}</td>
+  </tr>
+  <tr>
+    <td>Annual Salary</td>
+    <td>{{ employees.annualSalary }}</td>
+  </tr>
+  <tr>
+    <td>Date of Birth</td>
+    <td>{{ employees.dateOfBirth }}</td>
+  </tr>
 </table>
-<br>
-<button (click)='toggleDetails()'>
-    {{showDetails?"Hide":"Show"}} Details
-</button>
+<div *ngIf="!employees">
+  {{ statusMessage }}
+</div>
